@@ -35,6 +35,8 @@ const GameProvider = ({ children }) => {
     if (board[2] && board[2] === board[5] && board[5] === board[8]) return board[2];
 
     // handle changing turns
+    if (currentPlayer === 'x') setCurrentPlayer('o');
+    else if (currentPlayer === 'o') setCurrentPlayer('x');
   };
 
   return (
