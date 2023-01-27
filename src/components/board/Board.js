@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGameContext } from '../../context/GameContext.js';
+import { useGameContext } from '../context/GameContext.js';
 import './Board.css';
 import Box from '../box/Box.js';
 
