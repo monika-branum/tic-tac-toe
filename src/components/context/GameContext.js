@@ -38,7 +38,19 @@ const useGameContext = () => {
   return context;
 };
 
-const handleBoxClick = () => {
+const handleBoxClick = (box, index) => { 
+    // check if it should actually place a piece is occupied or game over
+
+    if (board[index] ||!active) return;
+}
+
+    // this is where to modify the board to have the new move
+    const tempBoard=[...board];
+    tempBoard[index]= currentPlayer
+    setBoard(tempBoard);
+
+    // check if game has been won or tied
+    // handle changing turns
   console.log('box clicked');
 };
 
