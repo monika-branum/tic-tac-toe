@@ -11,7 +11,7 @@ const GameProvider = ({ children }) => {
   const [active, setActive] = useState(true);
   const [gameMessage, setGameMessage] = useState('X&quot;s turn');
 
-  const handleBoxClick = (box, index) => {
+  const handleBoxClick = (index) => {
     // check if it should actually place a piece is occupied or game over
 
     if (board[index] || !active) return;
@@ -22,22 +22,32 @@ const GameProvider = ({ children }) => {
     setBoard(tempBoard);
 
     // check if game has been won or tied
-    // diagonal
-    if (board[0] && board[0] === board[4] && board[4] === board[8]) return board[0];
-    if (board[2] && board[2] === board[4] && board[4] === board[6]) return board[2];
-    //row
-    if (board[0] && board[0] === board[1] && board[1] === board[2]) return board[0];
-    if (board[3] && board[3] === board[4] && board[4] === board[5]) return board[3];
-    if (board[6] && board[6] === board[7] && board[7] === board[8]) return board[6];
-    // column
-    if (board[0] && board[0] === board[3] && board[3] === board[6]) return board[0];
-    if (board[1] && board[1] === board[4] && board[4] === board[7]) return board[1];
-    if (board[2] && board[2] === board[5] && board[5] === board[8]) return board[2];
+    function winCheck() {
+      // diagonal
+      if (board[0] && board[0] === board[4] && board[4] === board[8]) return true;
+      if (board[2] && board[2] === board[4] && board[4] === board[6]) return true;
+      //row
+      if (board[0] && board[0] === board[1] && board[1] === board[2]) return true;
+      if (board[3] && board[3] === board[4] && board[4] === board[5]) return true;
+      if (board[6] && board[6] === board[7] && board[7] === board[8]) return true;
+      // column
+      if (board[0] && board[0] === board[3] && board[3] === board[6]) return true;
+      if (board[1] && board[1] === board[4] && board[4] === board[7]) return true;
+      if (board[2] && board[2] === board[5] && board[5] === board[8]) return true;
+
+      return false;
+    }
+
+    if (winCheck()) {
+      setGameMessage(`${currentPlayer} won`);
+      setActive(false);
+      return
+    }
 
     // handle changing turns
-    if (currentPlayer === 'x') setCurrentPlayer('o');
-    else if (currentPlayer === 'o') setCurrentPlayer('x');
-  };
+    if (currentPlayer === 'x') { setGameMessage("It is x's turn!")}
+    else { setGameMessage("It is O's turn!");}
+  ;
 
   return (
     <GameContext.Provider
@@ -56,15 +66,16 @@ const GameProvider = ({ children }) => {
       {children}
     </GameContext.Provider>
   );
-};
+    ;
 
-const useGameContext = () => {
-  const context = useContext(GameContext);
+// const useGameContext = () => {
+//   const context = useContext(GameContext);
 
-  if (context === undefined) {
-    throw new Error('useGameContext must be used within GameProvider');
-  }
-  return context;
-};
+//   if (context === undefined) {
+//     throw new Error('useGameContext must be used within GameProvider');
+//   }
+//   return context;
+// };
 
-export { GameProvider, useGameContext };
+export { GameProvider };
+//fix the export
