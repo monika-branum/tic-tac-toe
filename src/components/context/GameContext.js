@@ -41,13 +41,18 @@ const GameProvider = ({ children }) => {
     if (winCheck()) {
       setGameMessage(`${currentPlayer} won`);
       setActive(false);
-      return
+      return;
     }
 
     // handle changing turns
-    if (currentPlayer === 'x') { setGameMessage("It is x's turn!")}
-    else { setGameMessage("It is O's turn!");}
-  ;
+    if (currentPlayer === 'x') {
+      setCurrentPlayer('o');
+      setGameMessage("It is x's turn!");
+    } else {
+      setCurrentPlayer('x');
+      setGameMessage("It is O's turn!");
+    }
+  };
 
   return (
     <GameContext.Provider
@@ -66,16 +71,16 @@ const GameProvider = ({ children }) => {
       {children}
     </GameContext.Provider>
   );
-    ;
+};
 
-// const useGameContext = () => {
-//   const context = useContext(GameContext);
+const useGameContext = () => {
+  const context = useContext(GameContext);
 
-//   if (context === undefined) {
-//     throw new Error('useGameContext must be used within GameProvider');
-//   }
-//   return context;
-// };
+  if (context === undefined) {
+    throw new Error('useGameContext must be used within GameProvider');
+  }
+  return context;
+};
 
-export { GameProvider };
+export { GameProvider, useGameContext };
 //fix the export
