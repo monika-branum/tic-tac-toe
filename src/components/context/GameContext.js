@@ -9,7 +9,7 @@ const GameProvider = ({ children }) => {
   const [currentPlayer, setCurrentPlayer] = useState('x');
   const [board, setBoard] = useState(['', '', '', '', '', '', '', '', '']);
   const [active, setActive] = useState(true);
-  const [gameMessage, setGameMessage] = useState('X&quot;s turn');
+  const [gameMessage, setGameMessage] = useState('x');
 
   const handleBoxClick = (index) => {
     // check if it should actually place a piece is occupied or game over
@@ -22,7 +22,7 @@ const GameProvider = ({ children }) => {
     setBoard(tempBoard);
 
     // check if game has been won or tied
-    function winCheck() {
+    function winCheck(board) {
       // diagonal
       if (board[0] && board[0] === board[4] && board[4] === board[8]) return true;
       if (board[2] && board[2] === board[4] && board[4] === board[6]) return true;
@@ -38,8 +38,29 @@ const GameProvider = ({ children }) => {
       return false;
     }
 
-    if (winCheck()) {
+    function catCheck(board) {
+      if (
+        board[0] &&
+        board[1] &&
+        board[2] &&
+        board[3] &&
+        board[4] &&
+        board[5] &&
+        board[6] &&
+        board[7] &&
+        board[8]
+      )
+        return true;
+
+      return false;
+    }
+
+    if (winCheck(tempBoard)) {
       setGameMessage(`${currentPlayer} won`);
+      setActive(false);
+      return;
+    } else if (catCheck(tempBoard)) {
+      setGameMessage(`Cats Game`);
       setActive(false);
       return;
     }
@@ -47,10 +68,10 @@ const GameProvider = ({ children }) => {
     // handle changing turns
     if (currentPlayer === 'x') {
       setCurrentPlayer('o');
-      setGameMessage("It is x's turn!");
+      setGameMessage("It is o's turn!");
     } else {
       setCurrentPlayer('x');
-      setGameMessage("It is O's turn!");
+      setGameMessage("It is x's turn!");
     }
   };
 
@@ -80,7 +101,14 @@ const useGameContext = () => {
     throw new Error('useGameContext must be used within GameProvider');
   }
   return context;
+
+  function refresh() {(
+    setActive(true)
+    setBoard('');
+    )
+  }
 };
 
 export { GameProvider, useGameContext };
+
 //fix the export
